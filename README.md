@@ -7,16 +7,15 @@
 ### 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 #### a. Untuk membuat proyek Django baru, hal yang pertama yang dilakukan adalah membuat direktori baru dengan nama "warung-imut" sebagai folder proyek. Setelah itu, saya buat repositori git baru dengan command "git init". Saya buat virtual environment python lalu saya install library-library yang akan dibutuhkan dan akhirnya saya jalankan command "django-admin startproject warung_imut". Hal ini akan membuat proyek Django. Saya juga tambahkan dua string ("localhost", "127.0.0.1") pada ALLOWED_HOSTS di settings.py.
 #### b. Untuk membuat aplikasi dengan nama main dalam proyek, saya lakukan command "python manage.py startapp main" pada direktori warung-imut utama. 
-#### c. Melakukan routing pada proyek agar dapat menjalankan aplikasi main dapat diimplementasikan  dengan menambahkan 'main' pada variabel INSTALLED_APPS di settings.py. 
+#### c. Melakukan routing pada proyek agar dapat menjalankan aplikasi main dapat diimplementasikan  dengan menambahkan 'main' pada variabel INSTALLED_APPS di settings.py dan menambahkan path urlspattern path('', include('main.urls')) di urls.py direktori warung imut. 
 #### d. Membuat model pada aplikasi main dengan ketentuan tugas dapat diimplementasikan dengan mendefinisikan sebuah class Item yang inherit dari Django model lalu memberikan attribute yang sesuai di file models.py pada direktori main.
 #### e. Membuat sebuah fungsi pada views.py untuk dikembalikan ke dalam sebuah template HTML dapat diimplementasikan dengan mendefinisikan fungsi yang mengembalikan render template HTML sesuai dengan konteks yang diberikan. Konteks disini adalah nama, kelas, dan npm.
 #### f. Membuat sebuah routing pada urls.py aplikasi main untuk memetakan fungsi yang telah dibuat pada views.py dapat diimplementasikan dengan membuat list yang berisikan path ke fungsi yang ada di views.py urls = [path('', show_main, name='show_main')]
-#### g. Melakukan deployment ke PWS terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet dapat dilakukan dengan
-
+#### g. Melakukan deployment ke PWS terhadap aplikasi yang sudah dibuat sehingga nantinya dapat diakses oleh teman-temanmu melalui Internet dapat diimplementasikan dengan membuat proyek baru di pws, lalu menambahkan ALLOWED_HOST di settings.py pada direktori utama dengan "argya-farel-warungimut.pbp.cs.ui.ac.id". Akhirnya saya melakukan instruksi yang sesuai di pwsnya agar repo proyek saya dibuild di pwsnya.
 #### h. Membuat README.md sesuai dengan perintah soal dengan mempelajari materi yang terkait dengan pertanyaan dan menjawabnya dengan baik
 
 ### 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
-####
+![Bagan](gambar\Blank diagram.jpeg)
 
 ### 3. Jelaskan fungsi git dalam pengembangan perangkat lunak!
 #### a. Git berperan sebagai version control system yang membantu developer dalam mengatur dan melacak perubahan dalam kode. Hal ini membuatnya penting dalam kolaborasi antara banyak developer, sehingga masing-masing developer dapat berkontribusi dengan baik. 
