@@ -15,7 +15,7 @@
 #### h. Membuat README.md sesuai dengan perintah soal dengan mempelajari materi yang terkait dengan pertanyaan dan menjawabnya dengan baik
 
 ### 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
-![Bagan](gambar\Blank diagram.jpeg)
+![Bagan](./gambar/Blank diagram.jpeg)
 
 ### 3. Jelaskan fungsi git dalam pengembangan perangkat lunak!
 #### a. Git berperan sebagai version control system yang membantu developer dalam mengatur dan melacak perubahan dalam kode. Hal ini membuatnya penting dalam kolaborasi antara banyak developer, sehingga masing-masing developer dapat berkontribusi dengan baik. 
