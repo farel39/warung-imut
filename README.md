@@ -4,6 +4,7 @@
 
 ## Tautan PWS : http://argya-farel-warungimut.pbp.cs.ui.ac.id/
 
+## Tugas 2
 ### 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 #### a. Untuk membuat proyek Django baru, hal yang pertama yang dilakukan adalah membuat direktori baru dengan nama "warung-imut" sebagai folder proyek. Setelah itu, saya buat repositori git baru dengan command "git init". Saya buat virtual environment python lalu saya install library-library yang akan dibutuhkan dan akhirnya saya jalankan command "django-admin startproject warung_imut". Hal ini akan membuat proyek Django. Saya juga tambahkan dua string ("localhost", "127.0.0.1") pada ALLOWED_HOSTS di settings.py.
 #### b. Untuk membuat aplikasi dengan nama main dalam proyek, saya lakukan command "python manage.py startapp main" pada direktori warung-imut utama. 
@@ -33,3 +34,219 @@
 
 ### 5. Mengapa model pada Django disebut sebagai ORM?
 #### Karena Django menyediakan abstraksi yang memungkinkan developer untuk berinteraksi dengan basis data relasional menggunakan objek Python, daripada menulis kueri SQL mentah saja. Django ORM mengabstraksikan kueri SQL dan menyedikan cara yang lebih "Python" untuk bekerja dengan basis data.
+
+## Tugas 3
+### 1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+#### a. Menghubungkan pengguna dengan aplikasi atau backend. Data delivery memastikan bahwa informasi dari backend dapat dikirim ke pengguna (frontend) secara tepat waktu dan efisien.
+#### b. Pengelolaan data yang dinamis. Konten yang ditampilkan kepada pengguna dapat berubah berdasarkan aktivitas pengguna tersebut. OLeh sebab itu, agar aplikasi tetap interaktif diperlukan mekanisme data delivery.
+#### c. Sistem notifikasi dan pembaruan real-time. Aplikasi modern biasanya memerlukan sebuah mekanisme untuk mengirimkan data secara real-time, contohnya notifikasi atau pembaruan status. Hal ini membutuhkan data delivery sistem yang baik.
+
+### 2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+#### Menurut saya, JSON lebih baik dikarenakan lebih ringkas dan sintaksnya menyerupai dictionary python sehingga mudah dipahami bagi saya. Formatnya juga lebih informatif.
+#### Alasan JSON lebih populer dibandingkan XML:
+##### a. JSON lebih ringkas, sederhana serta mudah dipahami oleh kita.
+##### b. JSON lebih cepat diparse oleh browser dan aplikasi karena strukturnya sederhana dan sudah di optimasikan.
+##### c. JSON memiliki hubungan yang lebih erat dengan JavaScript karena merupakan bagian dari notasi objek dalam JS.
+##### d. JSON lebih fleksibel dan ringan sehingga untuk keperluan keseharian dan tidak kompleks, JSON lebih preferable.
+
+### 3. Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
+#### Fungsi dari method is_valid() adalah memvalidasikan semua input terkait dengan field dalam sebuah forum. Misal, sebuah field mengharuskan integer, maka ia akan check apakah inputnya integer atau tidak. Fungsi ini akan mengembalikan nilai True jika semua validasi berhasil dan False jika ada kesalahan. Jika ada kesalahan, informasi tentang error akan disimpan di atribut errors.
+#### Alasan mengapa kita membutuhkan is_valid():
+##### a. Keamanaan. Validasi dengan is_valid() sangat penting untuk mencegah input yang tidak diinginkan atau berbahaya seperti injection.
+##### b. Integritas Data. Dengan memvalidasi input, maka kita dapat memastikan data yang masuk ke dalam sistem sesuai dengan tipe dan memiliki format yang benar.
+##### c. User Experience (UX). Menggunkaan is_valid(), apabila sebuah user melakukan kesalahan dalam input, maka umpan balik mengenai error tersebut akan langsung diberikan.
+
+### 4. Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+#### Alasan kita membutuhkan csrf_token saat membuat form di Django dikarenakan CSRF token membantu memastikan bahwa permintaan yang dikirimkan ke server berasal dari pengguna yang "valid" dan bukan yang sumber "jahat". Hal ini berguna untuk melindungi aplikasi dari penyerang yang mungkin mencoba membuat form jahat di situs web lain dan mengirimkannya ke aplikasi. 
+
+#### Jika kita tidak menambahkan csrf_token pada form Django maka seorang penyerang dapat membuat form palsu di situs mereka dan meminta pengguna yang sudah terautentikasi di sistem kita untuk mengirimkan data ke aplikasi web kita. Dengan ini, penyerang dapat menyalahgunakan data yang seharusnya terlindungi. Penyerang bisa melakukan tidakan penting atau sensitif seperti transfer uang atau pengaturan akun tanpa izin yang benar.
+
+### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+#### a. Saya buat direktori templates pada direktori utama (root folder) dan buat sebuah berkas HTML baru bernama base.html
+![Bagan](./gambar/foto_pbp_tugas3_1.jpeg)
+```bash
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block meta %} {% endblock meta %}
+  </head>
+
+  <body>
+    {% block content %} {% endblock content %}
+  </body>
+</html>
+```
+#### b. Pada settings.py yang ada pada direktori proyek warung_imut saya ubah kode variabel template dengan seperti berikut
+```bash
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'], 
+        'APP_DIRS': True,
+        ...
+    }
+]
+```
+#### c. Pada subdirektori templates yang ada pada direktori main, saya ubah kode berkas main.html seperti berikut
+```bash
+{% extends 'base.html' %}
+ {% block content %}
+ <h1>Warung Imut</h1>
+
+ <h5>NPM: </h5>
+ <p>{{ npm }}<p>
+
+ <h5>Name:</h5>
+ <p>{{ name }}</p>
+
+ <h5>Class:</h5>
+ <p>{{ class }}</p>
+ {% if not item_entries %}
+<p>Belum ada data item pada warung imut.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Item Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th>Stock</th>
+    <th>Imutness Rating</th>
+  </tr>
+
+  {% comment %} Berikut cara memperlihatkan data item di bawah baris ini 
+  {% endcomment %} 
+  {% for item_entry in item_entries %}
+  <tr>
+    <td>{{item_entry.name}}</td>
+    <td>{{item_entry.price}}</td>
+    <td>{{item_entry.description}}</td>
+    <td>{{item_entry.stock}}</td>
+    <td>{{item_entry.imutness_rating}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:create_item_entry' %}">
+  <button>Add New Item Entry</button>
+</a>
+ {% endblock content %}
+```
+#### d. Saya tambahkan UUIDField dalam class Item yang berada di models.py lalu saya lakukan migrasi model Djangonya.
+```py
+from django.db import models
+import uuid
+class Item(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # Ini yang ditambahkan
+    name = models.CharField(max_length=100)  
+    price = models.IntegerField()  
+    description = models.TextField()  
+    stock = models.IntegerField()
+    imutness_rating = models.FloatField()
+```
+#### e. Di direktori main saya buat file python baru yaitu forms.py yang dapat menerima Item entry baru. Fields yang bisa input tertera pada kode dibawah ini.
+```py
+from django.forms import ModelForm
+from main.models import Item
+
+class ItemForm(ModelForm):
+    class Meta:
+        model = Item
+        fields = ["name", "price", "description", "stock", "imutness_rating"]
+```
+#### f. Pada berkas views.py yang ada di direktori main saya import class ItemForm, class Item dari sebelumnya serta redirect, dll. Lalu saya buat fungsi-fungsi untuk menghandle entry Item, melihat xml dan json dengan ID ataupun tidak. 
+```py
+from django.shortcuts import render, redirect
+from main.forms import ItemForm
+from main.models import Item
+from django.http import HttpResponse
+from django.core import serializers
+
+# Create your views here.
+def show_main(request):
+    item_entries = Item.objects.all()
+    context = {
+        'npm' : '2306152424',
+        'name': 'Argya Farel Kasyara',
+        'class': 'PBP C',
+        'item_entries': item_entries
+    }
+
+    return render(request, "main.html", context)
+
+def create_item_entry(request):
+    form = ItemForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_main')
+
+    context = {'form': form}
+    return render(request, "create_item_entry.html", context)
+
+def show_xml(request):
+    data = Item.objects.all()
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json(request):
+    data = Item.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def show_xml_by_id(request, id):
+    data = Item.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json_by_id(request, id):
+    data = Item.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+
+#### g. Pada direktori templates yang berada di direktori main, saya tambahkan sebauh file bernama create_item_entry.html yang berupa sebuah html untuk melakukan entry item
+
+```bash
+{% extends 'base.html' %} 
+{% block content %}
+<h1>Add New Item Entry</h1>
+
+<form method="POST">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+    <tr>
+      <td></td>
+      <td>
+        <input type="submit" value="Add Item Entry" />
+      </td>
+    </tr>
+  </table>
+</form>
+
+{% endblock %}
+```
+
+#### h. Terakhir saya melakukan routing pada urls.py yang berada di direktori main dengan cara menambahkan path sebagai berikut. Path-path tersebut berfungsi untuk menghandle request pengguna dan mengembalikan salah satu fungsi views.py yang sesuai.
+```py 
+from django.urls import path
+from main.views import show_main, create_item_entry, show_xml, show_json, show_xml_by_id, show_json_by_id
+
+app_name = 'main'
+
+urlpatterns = [
+    path('', show_main, name='show_main'),
+    path('create-item-entry', create_item_entry, name='create_item_entry'), # Fungsi views.py untuk membuat entry item
+    path('xml/', show_xml, name='show_xml'), # Fungsi views.py untuk menunjukkan xml keseluruhan
+    path('json/', show_json, name='show_json'), # Fungsi views.py untuk menunjukkan json keseluruhan
+    path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'), # Fungsi views.py untuk menunjukkan xml berdasarkan id
+    path('json/<str:id>/', show_json_by_id, name='show_json_by_id'), # Fungsi views.py untuk menunjukkan json berdasarkan id
+]
+```
+### Screeshot hasil akses URL pada Postman 
+![Bagan](./gambar/foto_pbp_tugas3_2.jpeg)
+![Bagan](./gambar/foto_pbp_tugas3_3.jpeg)
+![Bagan](./gambar/foto_pbp_tugas3_4.jpeg)
+![Bagan](./gambar/foto_pbp_tugas3_5.jpeg)
