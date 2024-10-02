@@ -4,6 +4,13 @@
 
 ## Tautan PWS : http://argya-farel-warungimut.pbp.cs.ui.ac.id/
 
+## Link Tugas
+- [Tugas 2](#tugas-2)
+- [Tugas 3](#tugas-3)
+- [Tugas 4](#tugas-4)
+- [Tugas 5](#tugas-5)
+
+
 ## Tugas 2
 ### 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 #### a. Untuk membuat proyek Django baru, hal yang pertama yang dilakukan adalah membuat direktori baru dengan nama "warung-imut" sebagai folder proyek. Setelah itu, saya buat repositori git baru dengan command "git init". Saya buat virtual environment python lalu saya install library-library yang akan dibutuhkan dan akhirnya saya jalankan command "django-admin startproject warung_imut". Hal ini akan membuat proyek Django. Saya juga tambahkan dua string ("localhost", "127.0.0.1") pada ALLOWED_HOSTS di settings.py.
@@ -482,3 +489,140 @@ def show_main(request):
 
     return render(request, "main.html", context)
 ```
+
+## Tugas 5
+### 1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+#### Jika ada dua atau lebih aturan CSS yang mengarah ke elemen yang sama, CSS selector dengan nilai spesifisitas tertinggi akan "menang", dan deklarasi gayanya akan diterapkan ke elemen HTML tersebut. Hal ini dinamakan CSS Specificity.
+
+#### Terdapat empat kategori yang menentukan tingkat spesifisitas suatu CSS selector (lebih atas, lebih tinggi prioritasnya):
+##### a. Inline styles - Contoh: ```<h1 style = "color: pink;">```
+##### b. IDs - Contoh: ```#navbar```
+##### c. Classes, pseudo-classes, attribute selectors - Contoh: ```.test, :hover, [href]```
+##### d. Elements dan pseudo-elements - Contoh: ```h1, ::before```
+
+#### Cara Mengkalukasi Specificity: Mulai dari 0, tambahkan 100 untuk setiap nilai ID, tambahkan 10 untuk setiap nilai class (atau pseudo-class atau attribute selector), tambahkan 1 untuk setiap element selector atau pseudo-element
+
+##### Note 1: Inline style mendapat nilai spesifisitas 1000, dan selalu diberi prioritas tertinggi.
+##### Note 2: Ada satu pengecualian untuk aturan ini: jika menggunakan aturan !important, maka prioritas tertinggi akan pasti itu.
+
+### 2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
+
+#### Responsive design sangat penting dalam pengembangan aplikasi web karena memastikan tampilan dan fungsi situs web dapat menyesuaikan dengan berbagai ukuran layar dan perangkat. Dengan semakin banyaknya pengguna yang mengakses internet melalui berbagai perangkat seperti smartphone, tablet, dan desktop, penting untuk menyediakan pengalaman pengguna (user experience) yang optimal di semua perangkat. 
+
+#### Contoh aplikasi yang sudah menerapkan resposive design adalah Spotify yang berfungsi dengan baik di berbagai ukuran layar. Elemen-elemen seperti menu dan daftar putar dapat dengan mudah diakses di perangkat kecil maupun besar.
+
+#### Contoh aplikasi yang belum menerapkan responsive design adalah SIAK NG Universitas Indonesia. Tampilan websitenya sama ketika kita menggunakan perangkat laptop/PC ataupun perangkat mobile seperti HP.
+
+### 3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+#### a. Margin adalah ruang di luar elemen yang memisahkan elemen tersebut dari elemen lain di sekitarnya. Berfungsi untuk mengatur jarak antara elemen yang satu dengan yang lain.
+#### Contoh implementasi margin 20 pixel:
+```css
+.contoh {
+  margin: 20px; 
+}
+```
+
+#### b. Border adalah garis yang mengelilingi elemen dan terletak di antara margin dan padding. Berfungsi untuk menambahkan garis pembatas di sekitar elemen. Border bisa diatur warna, ketebalan, dan gaya garisnya.
+#### Contoh implementasi border hitam dengan ketebalan 2 pixel:
+```css
+.contoh {
+  border: 2px solid black; 
+}
+```
+#### c. Padding adalah ruang di dalam elemen yang memisahkan konten dari border. Berfungsi untuk mengatur jarak antara konten elemen dan batas border-nya. Padding menambah ukuran elemen, tetapi tidak menambah ruang di luar elemen.
+#### Contoh implementasi padding sebesar 15 pixel:
+```css
+.contoh {
+  padding: 15px; 
+}
+```
+
+### 4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+#### a. Flexbox adalah sistem tata letak yang digunakan untuk mendistribusikan ruang di dalam sebuah wadah, dan mengatur elemen-elemen anak (child elements) baik dalam arah horizontal maupun vertikal.
+#### Kegunaan FlexBox:
+- Penyusunan dinamis elemen-elemen secara fleksibel atau responsif. 
+- Tata letak satu dimensi yang hanya memfokuskan hanya pada kolom ataupun baris tetapi tidak keduanya. Dengan kata lain, menyusun elemen secara horizontal atau vertikal.
+- Memberikan kontrol yang mudah untuk mengatur perataan (aligntment) dan distribusi elemen-elemen, baik vertikal maupun horizontal.
+
+#### b. Grid Layout adalah sistem tata letak dua dimensi yang memungkinkan pengembang untuk mengatur elemen-elemen di dalam baris dan kolom, layaknya seperti Grid. Sistem ini memberikan kontrol yang lebih kompleks dan sistematis dibandingkan flexbox.
+#### Kegunaan Grid Layout:
+- Memudahkan pembuatan tata letak berdasarkan area tertentu yang bisa ditentukan dengan grid lines, seperti header, sidebar, dan main content.
+- Tata letak dua dimensi yang bisa memfokuskan pada kolom ataupun baris atau keduanya. Dengan kata lain, menyusun elemen secara horizontal dan vertikal.
+- Memudahkan pengaturan tata letak yang responsif, seperti mengubah jumlah kolom atau posisi elemen saat ukuran layar berubah.
+
+
+### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+
+#### a. Menambahkan tailwind dengan cara menambahkan line pada base.html pada tag head
+```html
+...
+<head>
+{% block meta %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock meta %}
+<script src="https://cdn.tailwindcss.com">
+</script>
+</head>
+...
+
+```
+#### b. Menambah fitur edit item dengan membuat fungsi pada view.py dan melakukan routing pada urls.py
+```py
+def edit_item(request, id):
+    # Get mood entry berdasarkan id
+    item = Item.objects.get(pk = id)
+
+    # Set mood entry sebagai instance dari form
+    form = ItemForm(request.POST or None, instance=item)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_item.html", context)
+```
+```py
+urlpatterns = [
+    ...
+    path('edit-item/<uuid:id>', edit_item, name='edit_item'),
+    ...
+]
+```
+#### c. Menambahkan fitur delete item dengan membuat fungsi delete item pada views.py dan melakukan routing pada urls.py
+```py
+def delete_item(request, id):
+    # Get mood berdasarkan id
+    item = Item.objects.get(pk = id)
+    # Hapus mood
+    item.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))
+```
+```py
+urlpatterns = [
+    ...
+    path('delete/<uuid:id>', delete_item, name='delete_item'),
+    ...
+]
+```
+#### d. Menambahkan Navigation Bar dengan tombol-tombol yang sesuai (Home, Products, Order, Logout, Login, etc)
+#### e. Mengatur Konfigurasi Static Files dengan menambahkan beberapa baris kode di settings.py yang berada di proyek utama
+```py
+...
+STATIC_URL = '/static/'
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static' # merujuk ke /static root project pada mode development
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / 'static' # merujuk ke /static root project pada mode production
+...
+```
+#### f. Membuat template untuk card item yaitu card_item.html dan card_item_2.html. card_item.html memiliki tombol untuk mengedit dan menghapus sebuah item sementara card_item_2.html tidak punya.
+
+#### g. Membuat card_info.html yang dapat menampilkan sebuah teks untuk memberi informasi seperti npm, nama, dll.
+
+#### h. Menambahkan styles pada aplikasi dengan Tailwind dan External CSS. Lebih tepatnya pada semua template yang saya gunakan dan tampilkan di aplikasi.

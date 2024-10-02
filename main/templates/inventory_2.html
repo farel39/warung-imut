@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Warung Imut</title>
+<link rel="stylesheet" href="{% static 'css/inventory.css' %}"/>
+{% endblock meta %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="inventory-body" style="background-image: url('{% static 'image/inventory_background.png' %}');">
+    <div class="container inventory-container white-container" style="width: 550px; height: 800px">
+        <h2>Large Chest</h2>
+        <div class="inventory chest">
+            {% for item in chest_items %}
+                <div class="box">
+                    {% if item %}
+                        <img src="{{ item.image_url }}" alt="item" class="item-image">
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2>Inventory</h2>
+        <div class="inventory">
+            {% for item in inventory_items %}
+                <div class="box">
+                    {% if item %}
+                        <img src="{{ item.image_url }}" alt="item" class="item-image">
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Added a margin-top to create space before the button -->
+        <div class="flex justify-end mb-6 mt-8">
+            <a href="{% url 'main:create_item_entry' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                Checkout
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

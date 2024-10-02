@@ -21,7 +21,7 @@ def show_main(request):
         'name': request.user.username,
         'class': 'PBP C',
         'item_entries': item_entries,
-        'last_login': request.COOKIES['last_login'],
+        'last_login': request.COOKIES.get('last_login', 'Not logged in'),  # Safe access to the cookie
     }
 
     return render(request, "main.html", context)
@@ -86,3 +86,64 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def edit_item(request, id):
+    # Get item entry berdasarkan id
+    item = Item.objects.get(pk = id)
+
+    # Set item entry sebagai instance dari form
+    form = ItemForm(request.POST or None, instance=item)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_item.html", context)
+
+def delete_item(request, id):
+    # Get item berdasarkan id
+    item = Item.objects.get(pk = id)
+    # Hapus item
+    item.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+@login_required(login_url='/login')
+def show_products(request):
+    item_entries = Item.objects.all()
+    context = {
+        'npm' : '2306152424',
+        'name': request.user.username,
+        'class': 'PBP C',
+        'item_entries': item_entries,
+        'last_login': request.COOKIES.get('last_login', 'Not logged in'), 
+    }
+
+    return render(request, "products.html", context)
+
+def view_cart(request):
+    data = Item.objects.all()
+    item_entries = Item.objects.filter(user=request.user)
+    context = {
+        'npm' : '2306152424',
+        'name': request.user.username,
+        'class': 'PBP C',
+        'item_entries': item_entries,
+        'last_login': request.COOKIES['last_login'],
+    }
+
+    return render(request, "main.html", context)
+
+def buy_products(request):
+    # Simulating inventory items
+    chest_items = [None] * 54  # Empty slots (you can populate with images later)
+    inventory_items = [None] * 27  # Empty slots
+
+    # Pass the items to the template
+    context = {
+        'chest_items': chest_items,
+        'inventory_items': inventory_items,
+    }
+    return render(request, 'inventory_2.html', context)
