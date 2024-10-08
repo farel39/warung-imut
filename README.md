@@ -9,6 +9,7 @@
 - [Tugas 3](#tugas-3)
 - [Tugas 4](#tugas-4)
 - [Tugas 5](#tugas-5)
+- [Tugas 6](#tugas-6)
 
 
 ## Tugas 2
@@ -626,3 +627,98 @@ else:
 #### g. Membuat card_info.html yang dapat menampilkan sebuah teks untuk memberi informasi seperti npm, nama, dll.
 
 #### h. Menambahkan styles pada aplikasi dengan Tailwind dan External CSS. Lebih tepatnya pada semua template yang saya gunakan dan tampilkan di aplikasi.
+
+## Tugas 6
+
+
+### 1. Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
+
+#### a. JavaScript memungkinkan pengembang menambahkan interaktivitas ke halaman web. Misalnya, JavaScript dapat digunakan untuk membuat tombol yang merespons klik, memvalidasi form di sisi klien, atau memperbarui konten halaman tanpa memuat ulang (melalui teknik seperti AJAX).
+#### b. Sebagian besar pengolahan JavaScript terjadi di sisi klien (browser), sehingga mengurangi beban server dan mempercepat respon aplikasi.
+#### c. JavaScript bekerja sangat baik dengan HTML dan CSS untuk menciptakan antarmuka pengguna yang dinamis dan menarik.
+#### d. JavaScript mendukung pemrosesan asinkron melalui fungsi seperti setTimeout, setInterval, serta fitur modern seperti Promises dan async/await. Ini memungkinkan pengembang menangani operasi yang memerlukan waktu seperti pengambilan data dari API tanpa membekukan UI aplikasi.
+
+### 2. Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
+
+#### Fungsi penggunaan await dalam konteks fetch() adalah untuk membuat JavaScript menunggu hingga promise yang dihasilkan oleh fetch() selesai diproses. Dengan kata lain, await memberhentikan sementara eksekusi kode di baris tersebut hingga respons dari permintaan HTTP (fetch()) diterima, diproses, dan promise-nya diselesaikan (resolved atau rejected).
+#### Jika await tidak digunakan, maka fetch() akan mengembalikan sebuah promise yang belum selesai, yang berarti kode akan langsung melanjutkan ke baris berikutnya sebelum permintaan HTTP selesai. Ini bisa menyebabkan kita mencoba mengakses data yang belum tersedia atau bekerja dengan promise alih-alih hasil yang diinginkan.
+### 3. Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?
+
+#### Kita perlu menggunakan decorator @csrf_exempt pada view yang akan digunakan untuk AJAX POST dalam situasi tertentu karena Django secara default mengaktifkan mekanisme Cross-Site Request Forgery (CSRF) protection. Mekanisme ini bertujuan untuk melindungi aplikasi web dari serangan CSRF dengan memastikan bahwa setiap request POST yang dikirim ke server berasal dari sumber yang terpercaya.
+#### Namun, ketika kita menggunakan AJAX POST, request yang dikirim dari JavaScript mungkin tidak menyertakan token CSRF yang diperlukan, terutama jika kita belum mengatur token tersebut dalam request header. Jika view tersebut diproteksi oleh CSRF tetapi tidak ada token yang dikirim, Django akan memblokir request dan mengembalikan error 403 Forbidden.
+### 4. Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?
+
+#### Pembersihan data input pengguna tidak hanya dilakukan di frontend karena beberapa alasan keamanan dan keandalan. Meskipun pembersihan di frontend bisa memberikan pengalaman pengguna yang lebih baik, ada risiko besar jika hanya mengandalkan frontend. 
+#### Berikut beberapa alasan mengapa pembersihan juga perlu dilakukan di backend:
+#### a. Frontend dapat dimanipulasi oleh pengguna. Bahkan jika ada validasi di sisi frontend, pengguna dapat melewati validasi ini dengan menggunakan alat seperti inspector di browser, atau dengan mengirimkan permintaan langsung ke server (bypassing frontend).
+#### b. Frontend bisa berbeda-beda tergantung dari perangkat dan browser yang digunakan. Jika hanya mengandalkan pembersihan di frontend, hasilnya bisa tidak konsisten, terutama jika ada masalah pada sisi klien atau pengguna mematikan fitur validasi. 
+
+### 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+
+#### a. Membuat fungsi untuk menambahkan Item dengan AJAX lalu melakukan routing di urls.py
+```py
+@csrf_exempt
+@require_POST
+def add_item_entry_ajax(request):
+    name =  strip_tags(request.POST.get("name"))
+    price = request.POST.get("price")
+    description = strip_tags(request.POST.get("description"))
+    stock = request.POST.get("stock")
+    imutness_rating = request.POST.get("imutness_rating")
+    user = request.user
+
+    new_item = Item(
+        name=name, price=price,
+        description=description,
+        stock=stock,
+        imutness_rating=imutness_rating,
+        user=user
+    )
+    new_item.save()
+
+    return HttpResponse(b"CREATED", status=201)
+
+```
+
+```py
+urlpatterns = [
+    ...
+    path('create-item-entry-ajax', add_item_entry_ajax, name='add_item_entry_ajax'),
+]
+```
+
+#### b. Mengubah fungsi show_main() di views.py sehingga menampilkan data Item menggunakan fetch() API. Hal ini dilakukan dengan mendefinisikan fungsi-fungsi dengan JavaScript.
+
+#### d. Menambahkan penggunaan strip_tags untuk membersihkan data baru 
+```py
+@csrf_exempt
+@require_POST
+def add_item_entry_ajax(request):
+    name =  strip_tags(request.POST.get("name"))
+    description = strip_tags(request.POST.get("description"))
+    ...
+
+    return HttpResponse(b"CREATED", status=201)
+```
+```py
+class ItemForm(ModelForm):
+    ...
+
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        return strip_tags(name)
+
+    def clean_description(self):
+        description = self.cleaned_data["description"]
+        return strip_tags(description)
+```
+
+#### e. Membersihkan Data dengan DOMPurify
+```CSS
+...
+ classNameString = "columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full";
+        itemEntries.forEach((item) => {
+            const name = DOMPurify.sanitize(item.fields.name);
+            const description = DOMPurify.sanitize(item.fields.description);
+            ...
+```
