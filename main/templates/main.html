@@ -96,7 +96,7 @@
 
     document.getElementById("itemEntryForm").reset(); 
     document.querySelector("[data-modal-toggle='crudModal']").click();
-
+    hideModal()
     return false;
   }
 
@@ -210,6 +210,5 @@ const modalContent = document.getElementById('crudModalContent');
   document.getElementById("cancelButton").addEventListener("click", hideModal);
   document.getElementById("closeModalBtn").addEventListener("click", hideModal);
   document.getElementById("itemEntryForm").addEventListener("submit", (e) => {e.preventDefault();addItemEntry();})
-  document.getElementById("submitItemEntry").addEventListener("click", hideModal);
 </script>
 {% endblock content %}
