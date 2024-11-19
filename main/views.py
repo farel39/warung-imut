@@ -174,3 +174,30 @@ def add_item_entry_ajax(request):
     new_item.save()
 
     return HttpResponse(b"CREATED", status=201)
+
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse
+from .models import Item
+
+@csrf_exempt
+def create_item_flutter(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            new_item = Item.objects.create(
+                user=request.user,
+                name=data["name"],
+                price=int(data["price"]),
+                description=data["description"],
+                stock=int(data["stock"]),
+                imutness_rating=float(data["imutness_rating"])
+            )
+
+            new_item.save()
+
+            return JsonResponse({"status": "success"}, status=200)
+        except (KeyError, ValueError) as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid request method"}, status=401)
